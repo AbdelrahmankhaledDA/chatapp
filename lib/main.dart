@@ -15,7 +15,11 @@ import 'package:chatapp/core/routing/router_config.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Supabase.initialize(url: "", anonKey: "");
+  await Supabase.initialize(
+    url: "https://lnlqowbvivlgmcryviuf.supabase.co",
+    anonKey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxubHFvd2J2aXZsZ21jcnl2aXVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4OTMzNTEsImV4cCI6MjA5MjQ2OTM1MX0.unJfjrhXcZISvCxVLCBml-kGvcGnB3zhCFg_7F4iQ5w",
+  );
   setupLocator();
   runApp(
     MultiBlocProvider(

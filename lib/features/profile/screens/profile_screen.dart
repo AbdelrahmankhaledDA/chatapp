@@ -28,12 +28,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController phoneController;
   late TextEditingController emailController;
 
+  UserInfoModel? currentUser;
+
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: widget.user.user_name);
-    phoneController = TextEditingController(text: widget.user.phone_num);
-    emailController = TextEditingController(text: widget.user.email);
+    currentUser = widget.user;
+    nameController = TextEditingController(text: currentUser!.user_name);
+    phoneController = TextEditingController(text: currentUser!.phone_num);
+    emailController = TextEditingController(text: currentUser!.email);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProfileCubit>().getProfileData();
@@ -70,13 +73,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onPressed: () {
               context.push(RouterConfigGenerator.contacts);
             },
-            icon: const Icon(Icons.contacts, color: Colors.white),
+            icon: Icon(Icons.contacts, color: Colors.white),
           ),
         ],
-        title: Text(
-          AppStrings.Profile,
-          style: const TextStyle(color: Colors.white),
-        ),
+        title: Text(AppStrings.profile, style: TextStyle(color: Colors.white)),
         backgroundColor: AppColors.purpleMain,
         elevation: 0,
         centerTitle: true,
@@ -98,18 +98,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 backgroundColor: Colors.green,
               ),
             );
+            setState(() {
+              updatedImageBytes = null;
+            });
+            context.read<ProfileCubit>().getProfileData();
           }
           if (state is ProfileSuccess) {
-            nameController.text = state.userInfo.user_name;
-            phoneController.text = state.userInfo.phone_num;
-            emailController.text = state.userInfo.email;
+            // تحديث المتغير المحلي والحقول بالبيانات الجديدة من قاعدة البيانات
+            setState(() {
+              currentUser = state.userInfo;
+              nameController.text = currentUser!.user_name;
+              phoneController.text = currentUser!.phone_num;
+              emailController.text = currentUser!.email;
+            });
           }
         },
         builder: (context, state) {
-          if (state is ProfileLoading || state is ProfileUpdating) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -120,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       height: 120,
                       width: double.infinity,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.purpleMain,
                         borderRadius: BorderRadius.vertical(
                           bottom: Radius.circular(40),
@@ -147,16 +151,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 backgroundColor: Colors.grey[200],
                                 backgroundImage: updatedImageBytes != null
                                     ? MemoryImage(updatedImageBytes!)
-                                    : (widget.user.image_profile != null
+                                    : (currentUser?.image_profile != null
                                               ? NetworkImage(
-                                                  widget.user.image_profile!,
+                                                  "${currentUser!.image_profile!}?v=${DateTime.now().millisecondsSinceEpoch}",
                                                 )
                                               : null)
                                           as ImageProvider?,
                                 child:
                                     (updatedImageBytes == null &&
-                                        widget.user.image_profile == null)
-                                    ? const Icon(
+                                        currentUser?.image_profile == null)
+                                    ? Icon(
                                         Icons.person,
                                         size: 60,
                                         color: Colors.grey,
@@ -164,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     : null,
                               ),
                             ),
-                            const CircleAvatar(
+                            CircleAvatar(
                               radius: 18,
                               backgroundColor: AppColors.purpleMain,
                               child: Icon(
@@ -180,22 +184,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
 
-                const SizedBox(height: 60),
+                SizedBox(height: 60),
 
-                Text(
-                  state is ProfileSuccess
-                      ? state.userInfo.user_name
-                      : widget.user.user_name,
-                  style: AppStyles.subtitleStyle.copyWith(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                if (state is ProfileLoading || state is ProfileUpdating)
+                  CircularProgressIndicator(color: AppColors.purpleMain)
+                else
+                  Text(
+                    currentUser?.user_name ?? "",
+                    style: AppStyles.subtitleStyle.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       CustomTextField(
@@ -203,22 +208,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         label: AppStrings.labelEmail,
                         hint: AppStrings.placeholderEmail,
                         icon: Icons.email_outlined,
+                        readOnly: true,
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       CustomTextField(
                         controller: nameController,
                         label: AppStrings.labelFullName,
                         hint: AppStrings.placeholderName,
                         icon: Icons.person_outline,
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: 10),
                       CustomTextField(
                         controller: phoneController,
                         label: AppStrings.labelPhone,
                         hint: AppStrings.placeholderPhone,
                         icon: Icons.phone_outlined,
                       ),
-                      const SizedBox(height: 25),
+                      SizedBox(height: 25),
 
                       AppButton(
                         text: AppStrings.update_Profile,
@@ -227,7 +233,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           context.read<ProfileCubit>().updateProfileData(
                             nameController.text,
                             phoneController.text,
-                            emailController.text,
                             updatedImageBytes,
                           );
                         },
@@ -236,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
 
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40),
@@ -245,7 +250,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     icon: Icons.logout,
                     onPressed: () async {
                       await SupabaseService().signOut();
-                      context.go(RouterConfigGenerator.signIn);
+                      if (context.mounted) {
+                        context.go(RouterConfigGenerator.signIn);
+                      }
                     },
                   ),
                 ),

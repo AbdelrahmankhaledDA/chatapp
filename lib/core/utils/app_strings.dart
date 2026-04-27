@@ -30,7 +30,7 @@ class AppStrings {
   static const String welcome = 'Welcome';
   static const String an_Error_occured = 'An Error occured';
   static const String my_Contacts = 'My Contacts';
-  static const String Profile = "Profile";
+  static const String profile = "Profile";
   static const String update_Profile = "Update Profile";
   static const String logout = "Logout";
 }

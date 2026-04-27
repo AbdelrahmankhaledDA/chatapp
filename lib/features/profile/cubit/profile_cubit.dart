@@ -22,14 +22,14 @@ class ProfileCubit extends Cubit<ProfileState> {
   Future<void> updateProfileData(
     String name,
     String phone,
-    String email,
+
     Uint8List? imageBytes,
   ) async {
     emit(ProfileUpdating());
     final result = await profileRepo.updateProfileData(
       name: name,
       phone: phone,
-      email: email,
+
       imageBytes: imageBytes,
     );
     result.fold(

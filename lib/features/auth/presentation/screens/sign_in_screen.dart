@@ -50,6 +50,15 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    phoneController.dispose();
+    usernameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => locator<AuthCubit>(),

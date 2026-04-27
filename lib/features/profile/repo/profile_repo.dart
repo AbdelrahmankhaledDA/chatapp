@@ -11,7 +11,7 @@ abstract class ProfileRepo {
   Future<Either<Failure, String>> updateProfileData({
     required String name,
     required String phone,
-    required String email,
+
     Uint8List? imageBytes,
   });
 }
@@ -37,7 +37,7 @@ class ProfileRepoImpl implements ProfileRepo {
   Future<Either<Failure, String>> updateProfileData({
     required String name,
     required String phone,
-    required String email,
+    // required String email,
     Uint8List? imageBytes,
   }) async {
     try {
@@ -48,17 +48,13 @@ class ProfileRepoImpl implements ProfileRepo {
 
       if (imageBytes != null) {
         imageUrl = await storageService.uploadFile(
-          bucketName: 'avatars',
+          bucketName: 'images',
           path: 'profile_pics/$userId.png',
           fileBytes: imageBytes,
         );
       }
 
-      Map<String, dynamic> updateData = {
-        "user_name": name,
-        "phone_num": phone,
-        "email": email,
-      };
+      Map<String, dynamic> updateData = {"user_name": name, "phone_num": phone};
 
       if (imageUrl != null) {
         updateData["image_profile"] = imageUrl;
