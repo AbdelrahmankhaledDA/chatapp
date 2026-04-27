@@ -1,17 +1,5 @@
-# chatapp
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+📱 PWA Chat AppA modern, real-time cross-platform chat application built with Flutter and Supabase. This project is designed as a Progressive Web App (PWA), offering a seamless experience across Web, Android, and iOS.
+🚀 Key Features -Real-time Messaging: Instant message delivery and updates powered by Supabase Realtime Streams. -Secure Authentication: Full user lifecycle management (Sign Up/Sign In) using Supabase Auth. -Dynamic Contact List: Browse registered users and initiate new conversations instantly. -Automated Room Creation: Intelligent chat room generation logic that prevents duplicate rooms between the same two users. -Unified State Management: Robust and predictable UI states using the Cubit pattern. -Profile Management: Personalized user profiles with support for profile images and metadata.
+🛠 Tech -StackFrontend: Flutter (Dart). -Backend as a Service (BaaS): Supabase (PostgreSQL, Auth, & Real-time). -State Management: Flutter Bloc / Cubit. -Navigation: GoRouter for declarative routing. -Database Interaction: Dartz for Functional Programming (Either Left/Right error handling)
+⭐ Don't forget to star the repo if you like it
