@@ -2,6 +2,12 @@
 
 A modern, real-time cross-platform chat application built with Flutter and Supabase. 
 This project is designed as a Progressive Web App (PWA), offering a seamless experience across Web, Android, and iOS. 🚀
+DEMO
+
+
+https://github.com/user-attachments/assets/87dfc3eb-19ee-476b-b66c-e752be1401bb
+
+
 
 ## Key Features
 - **Real-time Messaging**: Instant message delivery and updates powered by Supabase Realtime Streams.
