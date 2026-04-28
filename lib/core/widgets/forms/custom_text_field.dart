@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextEditingController? controller;
   final bool? readOnly;
+  final bool? enabled;
 
   const CustomTextField({
     Key? key,
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.controller,
     this.readOnly,
+    this.enabled,
   }) : super(key: key);
 
   @override
