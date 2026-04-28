@@ -209,6 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         hint: AppStrings.placeholderEmail,
                         icon: Icons.email_outlined,
                         readOnly: true,
+                         enabled: false,
                       ),
                       SizedBox(height: 10),
                       CustomTextField(
